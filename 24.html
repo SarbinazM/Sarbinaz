@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="kaa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intellektual Test Slaydı</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border: 4px solid #ff0000; /* Qızıl jiyek */
+            border-radius: 25px; /* Domalaq múyeshler */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            width: 500px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .hidden { display: none; }
+        h1 { color: #333; }
+        .btn-start {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .option-btn {
+            background-color: #ffffff;
+            color: #333;
+            border: 2px solid #007bff;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            display: block;
+            transition: 0.2s;
+        }
+        .option-btn:hover {
+            background-color: #007bff;
+            color: white;
+        }
+        .progress-bar {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="start-screen">
+        <h1>Bilim Sınawı</h1>
+        <p>Barlıq pánler boyınsha testti baslaymız ba?</p>
+        <button class="btn-start" onclick="startFullTest()">TESTNI BASLAYMIZ</button>
+    </div>
+
+    <div id="quiz-screen" class="hidden">
+        <div class="progress-bar" id="progress-info"></div>
+        <h2 id="subject-name" style="color: #ff0000;"></h2>
+        <h3 id="question-text"></h3>
+        <div id="options-container"></div>
+    </div>
+
+    <div id="result-screen" class="hidden">
+        <h2>Test juwmaqlandı!</h2>
+        <div id="score-summary" style="text-align: left; margin: 20px 0;"></div>
+        <div id="final-advice" style="background: #e9f7ef; padding: 15px; border-radius: 15px; border-left: 5px solid #28a745;"></div>
+        <button class="btn-start" style="margin-top:20px;" onclick="location.reload()">Qaytadan tapsırıw</button>
+    </div>
+</div>
+
+<script>
+    // Pánler hám 10 sorawdan ibarat baza
+    const allQuestions = {
+        'Matematika': [
+            { q: "3 + 344 = ?", a: ["347", "434", "577"], c: 1 },
+            { q: "10 * 10 = ?", a: ["100", "200", "10"], c: 0 },
+            { q: "25 / 5 = ?", a: ["4", "5", "6"], c: 1 },
+            { q: "3 + 7 = ?", a: ["9", "10", "11"], c: 1 },
+            { q: "12 - 4 = ?", a: ["8", "7", "9"], c: 0 },
+            { q: "6 * 2 = ?", a: ["12", "10", "14"], c: 0 },
+            { q: "15 + 5 = ?", a: ["10", "20", "25"], c: 1 },
+            { q: "9 / 3 = ?", a: ["3", "2", "4"], c: 0 },
+            { q: "100 - 50 = ?", a: ["40", "50", "60"], c: 1 },
+            { q: "1 + 1 = ?", a: ["1", "2", "3"], c: 1 }
+        ],
+        'Tariyx': [
+            { q: "Tariyxtin atasi kim?", a: ["Geradod", "1827"], c: 0 },
+            { q: "Ekinshi jahan urisi qashan boldi?", a: ["1939", "1945", "1947"], c: 1 },
+            { q: "Xanlıqlar dáwiri qashan?", a: ["XIX ásir", "XX ásir", "XV ásir"], c: 0 },
+            { q: "Ámir Temur kim?", a: ["Sarkarda", "Shayır", "Isker"], c: 0 },
+            { q: "Tariyxıy estelik?", a: ["Gúldirsın", "Bazar", "Mektab"], c: 0 },
+            { q: "Eń birinshi insan?", a: ["Adam Ata", "Ali", "Vali"], c: 0 },
+            { q: "Qaraqalpaqstan paytaxtı?", a: ["Nókis", "Tashkent", "Xiva"], c: 0 },
+            { q: "Alpamıs qaysı jannıń qaharmanı?", a: ["Dástan", "Ertek", "Qosıq"], c: 0 },
+            { q: "Xiva xanlıǵı qaysı jerde?", a: ["Xorezm", "Buxara", "Tashkent"], c: 0 },
+            { q: "Eń úlken kitap?", a: ["Ensiklopedya", "Dápter", "Jurnal"], c: 0 }
+        ],
+        'QQ-tili': [
+            { q: "Dıqqat sózi qaysı tilden?", a: ["Arab", "Rus", "Latın"], c: 0 },
+            { q: "Dawıslı sesler neshe?", a: ["9", "6", "12"], c: 0 },
+            { q: "Atlıq degen ne?", a: ["Zat atı", "Is-háreket", "Belgi"], c: 0 },
+            { q: "Súyikli sóziniń mánisi?", a: ["Jaqsı kórejaq", "Jaman", "Qıyın"], c: 0 },
+            { q: "Álipbe neshe háripten ibarat?", a: ["35", "29", "34"], c: 0 },
+            { q: "Sóz dizbegi?", a: ["Aq qala", "Kitap", "Me"], c: 0 },
+            { q: "Kelishi kórsetkishi?", a: ["-nıń", "-lar", "-dı"], c: 0 },
+            { q: "Kelbetlik?", a: ["Qızıl", "Keldi", "Men"], c: 0 },
+            { q: "Feıl?", a: ["Oqıdı", "Mektep", "Kishi"], c: 0 },
+            { q: "Sırtqı atamalar?", a: ["Termin", "At", "Sóz"], c: 0 }
+        ],
+        'Rus-tili': [
+            { q: "Привет - degen ne?", a: ["Sálem", "Saw bol", "Raxmet"], c: 0 },
+            { q: "Школа - degen ne?", a: ["Mektep", "Úy", "Bala"], c: 0 },
+            { q: "Учитель - kim?", a: ["Muǵallim", "Oqıwshı", "Diyxan"], c: 0 },
+            { q: "Книга - degen ne?", a: ["Kitap", "Qálem", "Sabaq"], c: 0 },
+            { q: "Стол - degen ne?", a: ["Ústel", "Ondıq", "Esik"], c: 0 },
+            { q: "Ручка - ne?", a: ["Qálem", "Dápter", "Sızǵısh"], c: 0 },
+            { q: "Мама - kim?", a: ["Ana", "Áke", "Apa"], c: 0 },
+            { q: "Дом - degen ne?", a: ["Úy", "Kóshe", "Qala"], c: 0 },
+            { q: "Окно - ne?", a: ["Terez", "Esik", "Pol"], c: 0 },
+            { q: "Хлеб - ne?", a: ["Nan", "Sút", "Suw"], c: 0 }
+        ]
+    };
+
+    let subjectKeys = Object.keys(allQuestions);
+    let currentSubIdx = 0;
+    let currentQIdx = 0;
+    let totalScores = { 'Matematika': 0, 'Tariyx': 0, 'QQ-tili': 0, 'Rus-tili': 0 };
+
+    function startFullTest() {
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.remove('hidden');
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        let subject = subjectKeys[currentSubIdx];
+        let qData = allQuestions[subject][currentQIdx];
+        
+        document.getElementById('progress-info').innerText = `${subject}: ${currentQIdx + 1}/10 soraw`;
+        document.getElementById('subject-name').innerText = subject;
+        document.getElementById('question-text').innerText = qData.q;
+        
+        let optContainer = document.getElementById('options-container');
+        optContainer.innerHTML = "";
+        
+        qData.a.forEach((opt, i) => {
+            let b = document.createElement('button');
+            b.innerText = opt;
+            b.className = "option-btn";
+            b.onclick = () => handleAnswer(i);
+            optContainer.appendChild(b);
+        });
+    }
+
+    function handleAnswer(selectedIndex) {
+        let subject = subjectKeys[currentSubIdx];
+        if(selectedIndex === allQuestions[subject][currentQIdx].c) {
+            totalScores[subject]++;
+        }
+
+        currentQIdx++;
+
+        // Bir pándegi 10 soraw bittimi?
+        if(currentQIdx < 10) {
+            loadQuestion();
+        } else {
+            // Keyingi pange ótiw
+            currentQIdx = 0;
+            currentSubIdx++;
+            
+            if(currentSubIdx < subjectKeys.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+    }
+
+    function showResults() {
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+
+        let summaryHtml = "";
+        let bestScore = -1;
+        let bestSubject = "";
+
+        for(let s in totalScores) {
+            summaryHtml += `<p><b>${s}:</b> ${totalScores[s]} / 10 ball</p>`;
+            if(totalScores[s] > bestScore) {
+                bestScore = totalScores[s];
+                bestSubject = s;
+            }
+        }
+        document.getElementById('score-summary').innerHTML = summaryHtml;
+
+        let advice = "";
+        if(bestSubject === "Matematika") {
+            advice = "Sizge Matematika hám Informatika baǵdarı sáykes keledi. Muhammad al-Xorezmiy atındaǵı TATU universitetine tayarlanıp kóriwińizdi maslahat beremiz!";
+        } else if(bestSubject === "Tariyx") {
+            advice = "Tariyx páninen nátiyjeńiz jaqsı. Huquqtanıw (Yuridik) fakulteti siz usın eń durıs tańlaw boladı.";
+        } else if(bestSubject === "QQ-tili" || bestSubject === "Rus-tili") {
+            advice = "Siz tillerge hám ádebiyatqa qızıǵasız. NMPI yamasa QQMU-dıń filologiya baǵdarlarında 1-orındı alıwıńız múmkin!";
+        }
+
+        document.getElementById('final-advice').innerHTML = `<strong>Maslahat:</strong> ${advice}`;
+    }
+</script>
+
+</body>
+</html>

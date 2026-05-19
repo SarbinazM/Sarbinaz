@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="kaa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bilim Testi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border: 3px solid red; /* Qızıl jiyek */
+            border-radius: 20px; /* Domalaq múyeshler */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            width: 400px;
+            text-align: center;
+        }
+        .hidden { display: none; }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover { background-color: #0056b3; }
+        .subject-btn { background-color: #28a745; }
+        .option-btn { background-color: #f8f9fa; color: #333; border: 1px solid #ccc; text-align: left; }
+        .option-btn:hover { background-color: #e2e6ea; }
+    </style>
+</head>
+<body>
+
+<div class="container" id="main-card">
+    <!-- Bas bet -->
+    <div id="start-screen">
+        <h1>Xosh keldińiz!</h1>
+        <p>Bilimińizdi sinap koriwge tayyarsiz ba?</p>
+        <button onclick="showSubjects()">Testti baslaw</button>
+    </div>
+
+    <!-- Pánler dizimi -->
+    <div id="subjects-screen" class="hidden">
+        <h2>Pándi tańlań:</h2>
+        <button class="subject-btn" onclick="startTest('Matematika')">Matematika</button>
+        <button class="subject-btn" onclick="startTest('Tariyx')">Tariyx</button>
+        <button class="subject-btn" onclick="startTest('QQ-tili')">Qaraqalpaq tili</button>
+        <button class="subject-btn" onclick="startTest('Rus-tili')">Rus tili</button>
+    </div>
+
+    <!-- Test sorawları -->
+    <div id="quiz-screen" class="hidden">
+        <h3 id="subject-title"></h3>
+        <p id="question-text"></p>
+        <div id="options-container"></div>
+    </div>
+
+    <!-- Nátiyje hám Maslahat -->
+    <div id="result-screen" class="hidden">
+        <h2>Sizdiń nátiyjeńiz:</h2>
+        <p id="score-details"></p>
+        <hr>
+        <h3 style="color: blue;">Sizge maslahat:</h3>
+        <p id="advice-text"></p>
+        <button onclick="location.reload()">Qayta baslaw</button>
+    </div>
+</div>
+
+<script>
+    const questions = {
+        'Matematika': [
+            { q: "2 + 2 = ?", a: ["3", "4", "5"], correct: 1 },
+            { q: "3 * 3 = ?", a: ["6", "9", "12"], correct: 1 },
+            { q: "10 / 2 = ?", a: ["5", "2", "4"], correct: 0 }
+            // Qalǵan 10 sorawdı sol tártipte qosıwıńızǵa boladı
+        ],
+        'Tariyx': [
+            { q: "Berdaq neshinshi ásirde jasaǵan?", a: ["XVIII", "XIX", "XX"], correct: 1 },
+            { q: "Eń birinshi kópirlik qaysı qalada qurılǵan?", a: ["Nókis", "Turtkul", "Xojeli"], correct: 2 }
+        ],
+        'QQ-tili': [
+            { q: "Qaraqalpaq tilinde neshe dawıslı ses bar?", a: ["6", "9", "12"], correct: 1 }
+        ],
+        'Rus-tili': [
+            { q: "Как тебя зовут? - degen ne?", a: ["Atıń kim?", "Qalaysıń?", "Qayaqtan keldiń?"], correct: 0 }
+        ]
+    };
+
+    let currentSubject = "";
+    let currentQuestionIndex = 0;
+    let scores = { 'Matematika': 0, 'Tariyx': 0, 'QQ-tili': 0, 'Rus-tili': 0 };
+
+    function showSubjects() {
+        document.getElementById('start-screen').classList.add('hidden');
+        document.getElementById('subjects-screen').classList.remove('hidden');
+    }
+
+    function startTest(subject) {
+        currentSubject = subject;
+        currentQuestionIndex = 0;
+        document.getElementById('subjects-screen').classList.add('hidden');
+        document.getElementById('quiz-screen').classList.remove('hidden');
+        showQuestion();
+    }
+
+    function showQuestion() {
+        let qData = questions[currentSubject][currentQuestionIndex];
+        document.getElementById('subject-title').innerText = currentSubject;
+        document.getElementById('question-text').innerText = qData.q;
+        
+        let optionsDiv = document.getElementById('options-container');
+        optionsDiv.innerHTML = "";
+        
+        qData.a.forEach((opt, index) => {
+            let btn = document.createElement('button');
+            btn.innerText = opt;
+            btn.className = "option-btn";
+            btn.onclick = () => checkAnswer(index);
+            optionsDiv.appendChild(btn);
+        });
+    }
+
+    function checkAnswer(index) {
+        if(index === questions[currentSubject][currentQuestionIndex].correct) {
+            scores[currentSubject]++;
+        }
+        
+        currentQuestionIndex++;
+        if(currentQuestionIndex < questions[currentSubject].length) {
+            showQuestion();
+        } else {
+            finishSubject();
+        }
+    }
+
+    function finishSubject() {
+        document.getElementById('quiz-screen').classList.add('hidden');
+        document.getElementById('subjects-screen').classList.remove('hidden');
+        
+        // Eger barlıq pánlerdi tapsırıp bolǵan bolsa nátiyjeni kórsetiw múmkin
+        // Bul jerde biz bir pánnen keyin de nátiyjeni kórsete alamız:
+        showFinalResult();
+    }
+
+    function showFinalResult() {
+        document.getElementById('subjects-screen').classList.add('hidden');
+        document.getElementById('result-screen').classList.remove('hidden');
+        
+        let scoreText = "";
+        let topSubject = "";
+        let maxScore = -1;
+
+        for (let sub in scores) {
+            scoreText += `${sub}: ${scores[sub]} ball<br>`;
+            if(scores[sub] > maxScore) {
+                maxScore = scores[sub];
+                topSubject = sub;
+            }
+        }
+        
+        document.getElementById('score-details').innerHTML = scoreText;
+
+        let advice = "";
+        if(topSubject === 'Matematika') {
+            advice = "Siz logikalıq oylawǵa kúshlisiz. IT, Injiniring yamasa Ekonomika baǵdarların (Tatu, Tashkent Finans universiteti) tańlawdı maslahat beremiz.";
+        } else if(topSubject === 'Tariyx') {
+            advice = "Sizge gumanitar tarawlar tuwrı keledi. Huquqtanıw (Yuridik) yamasa Xalıqaralıq qatnaslar tarawına tayarlanıp kóriń.";
+        } else {
+            advice = "Sizge pedagogika yamasa tilshilik baǵdarları (NMPI yamasa QQMU) sáykes keledi.";
+        }
+        
+        document.getElementById('advice-text').innerText = advice;
+    }
+</script>
+
+</body>
+</html>

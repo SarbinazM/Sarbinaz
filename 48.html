@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="kaa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qara Megan - Domalaq Múyeshli Slayt</title>
+    <style>
+        /* Slaydtıń tiykarg'ı qara fonı */
+        body {
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Tórtmúyeshlik - sheti domalaqlang'an */
+        .slide-container {
+            width: 800px;
+            height: 450px;
+            border: 6px solid red;
+            border-radius: 50px; /* Múyeshlerin domalaq qılıw ushın */
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background-color: #000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.2); /* Ápiwayı qızıl nur */
+        }
+
+        /* Ishindegi domalaqlar */
+        .circle {
+            width: 120px;
+            height: 120px;
+            border: 4px solid red;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: red;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Domalaqtıń ústine aparǵanda shıǵatuǵın tekst */
+        .circle .text-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            opacity: 0; /* Basında kórimeydi */
+            transform: scale(0.8);
+            transition: all 0.3s ease;
+            text-align: center;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        /* Effekt: Ústine aparǵanda (hover) tekst kórinedi */
+        .circle:hover {
+            transform: scale(1.1);
+            border-color: white;
+        }
+
+        .circle:hover .text-overlay {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Sifr tursın dep */
+        .circle .num {
+            transition: opacity 0.3s ease;
+        }
+
+        .circle:hover .num {
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-container">
+        
+        <div class="circle">
+            <span class="num">1</span>
+            <div class="text-overlay">qalay</div>
+        </div>
+
+        <div class="circle">
+            <span class="num">2</span>
+            <div class="text-overlay">ne qb</div>
+        </div>
+
+        <div class="circle">
+            <span class="num">3</span>
+            <div class="text-overlay">ne janaliq</div>
+        </div>
+
+        <div class="circle">
+            <span class="num">4</span>
+            <div class="text-overlay">paka</div>
+        </div>
+
+    </div>
+
+</body>
+</html> 

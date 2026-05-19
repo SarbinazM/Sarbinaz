@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eng zo'r Loading Animatsiyasi</title>
+    <style>
+        /* Asosiy fon va markazlash */
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #050505; /* To'q qora fon */
+            font-family: sans-serif;
+        }
+
+        .loader-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Aylana halqa */
+        .ring {
+            width: 150px;
+            height: 150px;
+            border: 4px solid #262626;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 150px;
+            color: #fff;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px #00e5ff;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        /* Neon yorug'lik chizig'i */
+        .ring::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            width: 100%;
+            height: 100%;
+            border: 4px solid transparent;
+            border-top: 4px solid #00e5ff;
+            border-right: 4px solid #00e5ff;
+            border-radius: 50%;
+            animation: animateCircle 2s linear infinite;
+        }
+
+        /* Yorug'lik nuqtasi (uchun) */
+        .ring span {
+            display: block;
+            position: absolute;
+            top: calc(50% - 2px);
+            left: 50%;
+            width: 50%;
+            height: 4px;
+            background: transparent;
+            transform-origin: left;
+            animation: animateLine 2s linear infinite;
+        }
+
+        .ring span::before {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #00e5ff;
+            top: -6px;
+            right: -8px;
+            box-shadow: 0 0 20px #00e5ff, 0 0 40px #00e5ff, 0 0 60px #00e5ff;
+        }
+
+        /* Animatsiyalar kodi */
+        @keyframes animateCircle {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes animateLine {
+            0% {
+                transform: rotate(45deg);
+            }
+            100% {
+                transform: rotate(405deg);
+            }
+        }
+
+        /* Pastdagi matn pulsatsiyasi */
+        .loading-text {
+            position: absolute;
+            bottom: -50px;
+            color: #00e5ff;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="loader-wrapper">
+        <div class="ring">
+            Loading
+            <span></span>
+        </div>
+        <div class="loading-text">Iltimos kuting...</div>
+    </div>
+
+</body>
+</html>

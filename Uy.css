@@ -1,0 +1,140 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f4f4;
+}
+
+.navbar{
+    background-color: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.logo{
+    color: white;
+}
+
+.menu{
+    display: flex;
+    gap: 20px;
+    list-style: none;
+}
+
+.menu a{
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.menu a:hover{
+    color: yellow !important;
+}
+
+/* 12 kartochka dızilimi */
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 40px 20px;
+}
+
+.card{
+    width: 300px;
+    background: white;
+    padding: 15px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    text-align: center;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.card img{
+    height: 150px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.card h2{
+    margin-top: 15px;
+    font-size: 20px;
+    color: #333;
+}
+
+.card p{
+    margin-top: 10px;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.read-more-btn{
+    display: inline-block;
+    margin: 15px auto 0;
+    background: blue;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.read-more-btn:hover{
+    background: red;
+}
+
+/* Checkbox-tı kórsetpew */
+.toggle-check {
+    display: none;
+}
+
+
+/* --- JAVASCRIPT-SIZ PÚTKIL EKANDÍ QAPLAW (CSS MAGIC) --- */
+
+/* 1. Checkbox basılǵanda kartochkanı pútkil ekranǵa jayıw */
+.card:has(.toggle-check:checked) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9999;
+    border-radius: 0;
+    padding: 100px 40px; /* Jaziwlar ortada ádemi turıwı ushın padding */
+    background: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 2. Basılǵan kartochkanıń ishindegi suwretti jasırıw */
+.toggle-check:checked ~ img {
+    display: none;
+}
+
+/* 3. Basılǵan kartochkanıń ishindegi túymeni jasırıw */
+.toggle-check:checked ~ .read-more-btn {
+    display: none;
+}
+
+/* 4. Tekstler polniy bette úlken hám ádemi kóriniwi ushın */
+.toggle-check:checked ~ h2 {
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.toggle-check:checked ~ p {
+    font-size: 22px;
+    max-width: 800px; /* Tekst júdá jayıp ketpwi ushın sheklis */
+    color: #111;
+}

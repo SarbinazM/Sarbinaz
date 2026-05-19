@@ -1,0 +1,109 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f4f4;
+}
+
+.navbar{
+    background-color: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.logo{
+    color: white;
+}
+
+.menu{
+    display: flex;
+    gap: 20px;
+    list-style: none;
+}
+
+.menu a{
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.menu a:hover{
+    color: yellow !important;
+}
+
+/* 12 suwret izbe-izligi */
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 40px 20px;
+}
+
+.card{
+    width: 300px;
+    background: white;
+    padding: 15px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.card img{
+    height: 150px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.card h2{
+    margin-top: 15px;
+    font-size: 20px;
+    color: #333;
+}
+
+.card p{
+    margin-top: 10px;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* "Read more" túymesin (label) Suliwlastiriw */
+.read-more-btn{
+    display: inline-block;
+    margin: 15px auto 0;
+    background: blue;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.read-more-btn:hover{
+    background: red;
+}
+
+
+/* 1. Tiykarǵı checkbox sırtqa kórınbey turıwı kerek */
+.toggle-check {
+    display: none;
+}
+
+/* 2. Checkbox belgilgengende (basılǵanda) suwretti jasırıw */
+.toggle-check:checked ~ img {
+    display: none;
+}
+
+/* 3. Checkbox belgilgengende "Read more" túymesiniń ózin de jasırıw */
+.toggle-check:checked ~ .read-more-btn {
+    display: none;
+}

@@ -4,9 +4,10 @@ import random
 
 #randint
 '''
-san = random.randint(1,20)
+san = random.randint(1,10)
 
 print(san)
+
 '''
 
 
@@ -32,8 +33,8 @@ miyweler =['alma','anar','juzim','banan']
 random.shuffle(miyweler)
 
 print(miyweler)
-'''
 
+'''
 
 #sample
 '''
@@ -88,27 +89,36 @@ print(san)
 #choice
 '''
 print(random.choice([30,50,70]))
-'''
-
-# ==============================Tapsirma=======================================
-'''at = random.randrange(10,100,5)
-print(input('Atiniz:'))
-print(at)'''
 
 '''
+
+import turtle
+
+screen = turtle.Screen()
+screen._root.attributes('-fullscreen', True)
+
+t = turtle.Turtle()
+t.speed(10) 
+t.pensize(5)
+t.color("black")
+
+
+t.left(90)
+t.forward(100)
+t.right(-210)
+t.forward(115)
+t.left(150)
+t.forward(100)
+
+turtle.done()
+
+
+
+
 import random
-san = [1,2,3,4,5,6,7,8,9,10]
-print(san)
-print(min(san))
-print(max(san))'''
-
-
-'''import random
-
 a = [random.randint(1,100) for i in range(10)]
 print(a)
-print(min(a))
 print(max(a))
+print(min(a))
 a.sort()
-print(a)'''
-
+print(a)
